@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "886511956955",
+    "firebase_url": "https://bikemaster-92b39.firebaseio.com",
+    "project_id": "bikemaster-92b39",
+    "storage_bucket": "bikemaster-92b39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886511956955:android:45e040db700a569f",
+        "android_client_info": {
+          "package_name": "BikeServicing.BikeMaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886511956955-bfhhm4ffurfega1pmq8p21r3bv8mrgo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU9AFWKrf-vMg9ftEUL0pgUvgWePi1wIc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886511956955:android:863dc8cf36cd8c65",
+        "android_client_info": {
+          "package_name": "bikeservicing.bikemaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886511956955-o1se98e7ieupsvg01hgt9mi8jdmee145.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bikeservicing.bikemaster",
+            "certificate_hash": "5728cbdc21c3dbeab054f9516f723398c36fadb7"
+          }
+        },
+        {
+          "client_id": "886511956955-bfhhm4ffurfega1pmq8p21r3bv8mrgo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU9AFWKrf-vMg9ftEUL0pgUvgWePi1wIc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886511956955-bfhhm4ffurfega1pmq8p21r3bv8mrgo4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
