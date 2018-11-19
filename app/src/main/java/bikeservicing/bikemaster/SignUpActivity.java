@@ -37,12 +37,42 @@ public class SignUpActivity extends AppCompatActivity {
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = editTextEmail.getText().toString();
-                password = editTextPassword.getText().toString();
-                name = editTextName.getText().toString();
-                phone = editTextPhone.getText().toString();
-                residence = editTextResidence.getText().toString();
 
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                email = editTextEmail.getText().toString();
+                if(!email.matches(emailPattern) || email.length()==0)
+                {
+                    //editTextEmail.getText().clear();
+                    editTextEmail.setError("Invalid Email Address");
+
+
+                }
+                password = editTextPassword.getText().toString();
+                if(password.length()<6)
+                {
+                    //editTextPassword.getText().clear();
+                    editTextPassword.setError("Password too short!!!");
+
+                }
+                name = editTextName.getText().toString();
+                if(name.length()==0)
+                {
+                    editTextName.setError("Enter Name!!");
+
+                }
+                phone = editTextPhone.getText().toString();
+                if(phone.length()!=10)
+                {
+                   // editTextPhone.getText().clear();
+                    editTextPhone.setError("Enter Valid PhoneNo ");
+
+                }
+                residence = editTextResidence.getText().toString();
+                if(residence.length()==0)
+                {
+                    editTextResidence.setError("Enter Address!!");
+
+                }
                 HashMap<String,String> userInfo = new HashMap<>();
                 userInfo.put("name",name);
                 userInfo.put("email",email); userInfo.put("residence",residence); userInfo.put("age",age);
