@@ -75,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Sign in successfull",Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(MainActivity.this,ServicePickerActivity.class);
-                    startActivity(intent);
+
                 }
                 else
                 {
@@ -116,8 +115,11 @@ public class MainActivity extends AppCompatActivity {
             //now for user
             HashMap<String,String> adminInfo = new HashMap<>();
             adminInfo.put("name",name); adminInfo.put("residence","Pune");
-            firebaseDatabase.child("users").child(userID).child("info").setValue(adminInfo);
-            firebaseDatabase.child("users").child(userID).child("token").setValue(instanceToken );
+            firebaseDatabase.child("Users").child(userID).child("info").setValue(adminInfo);
+            firebaseDatabase.child("Users").child(userID).child("token").setValue(instanceToken );
+
+            Intent intent = new Intent(MainActivity.this,AdminListOfRequestsActivity.class);
+            startActivity(intent);
 
         }
 
@@ -129,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("myTag" , "Writing FCM Token to Firebase");
 
             firebaseDatabase.child("Users").child(userID).child("Token").setValue(instanceToken);
+
+            Intent intent = new Intent(MainActivity.this,ServicePickerActivity.class);
+            startActivity(intent);
         }
 
 

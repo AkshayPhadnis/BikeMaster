@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".ServicePickerActivity"></activity>
+        <activity android:name=".ServicePickerActivity" />
+        <activity android:name=".AdminListOfRequestsActivity" />
+        <activity android:name=".DateTimePickerActivity"></activity>
     </application>
 
 </manifest>
