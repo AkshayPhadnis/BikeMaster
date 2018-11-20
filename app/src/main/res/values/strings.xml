@@ -124,4 +124,14 @@
 
     <string name="Rs">\u20B9</string>
 
+
+    <string name="time_prompt">Choose timeslot</string>
+
+    <string-array name="timeSlots">
+        <item>Morning(10am to 12pm)</item>
+        <item>Afternoon(12 pm to 4pm)</item>
+        <item>Evening(4pm to 7pm)</item>
+        <item>Night(7pm to 10pm)</item>
+    </string-array>
+
 </resources>
