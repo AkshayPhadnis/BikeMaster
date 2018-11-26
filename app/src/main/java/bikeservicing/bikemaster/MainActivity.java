@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editTextEmail, editTextPassword;
     Button buttonLogin, buttonSignup;
     FirebaseAuth mAuth;
-    String instanceToken,email,password;
+    String instanceToken, email, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            System.out.println("Email: " + user.getEmail());
+            if(user.getEmail().compareTo("akshayphadnis1994@gmail.com") == 0)
+                startActivity(new Intent(MainActivity.this, AdminListOfRequestsActivity.class));
+            else
+                startActivity(new Intent(MainActivity.this,ServicePickerActivity.class));
+
+            this.finish();
+
+        }
+
+
         initialize();
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
@@ -48,23 +64,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                 email = editTextEmail.getText().toString();
+                email = editTextEmail.getText().toString();
                 password = editTextPassword.getText().toString();
-                if( email.length()==0)
-                {//editTextEmail.getText().clear();
+                if (email.length() == 0) {//editTextEmail.getText().clear();
                     editTextEmail.setError("Invalid Email Address");
-                }
-
-                else if(password.length()<6)
-                {//editTextPassword.getText().clear();
+                } else if (password.length() < 6) {//editTextPassword.getText().clear();
                     editTextPassword.setError("Password too short!!!");
-                }
-                else
+                } else
                     signIn();
             }
         });
@@ -83,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     addTokenToFirebase(instanceToken, user);
 
+
                     Toast.makeText(getApplicationContext(), "Sign in successfull", Toast.LENGTH_LONG).show();
 
                 }
@@ -93,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     public void addTokenToFirebase(String instanceToken, FirebaseUser signedInUser) {
@@ -101,45 +114,49 @@ public class MainActivity extends AppCompatActivity {
         String userID = signedInUser.getUid();
         String name = " ";
 
-        if(email.equals("akshayphadnis1994@gmail.com"))//E.g. Akshay is admin and will get customer's notifications
+        if (email.equals("akshayphadnis1994@gmail.com"))//E.g. Akshay is admin and will get customer's notifications
         {
             name = "Akshay";
 
-            HashMap<String,String> tokenDetails = new HashMap<>();
+            HashMap<String, String> tokenDetails = new HashMap<>();
 
-            tokenDetails.put("AdminName",name);
-            tokenDetails.put("Token",instanceToken);
+            tokenDetails.put("AdminName", name);
+            tokenDetails.put("Token", instanceToken);
 
             DatabaseReference firebaseDatabase;
             firebaseDatabase = FirebaseDatabase.getInstance().getReference();
 
-            Log.d("myTag" , "Writing FCM Token to Firebase");
+            Log.d("myTag", "Writing FCM Token to Firebase");
 
             firebaseDatabase.child("AdminToken").child(name).setValue(tokenDetails);
 
 
             //now for user
-            HashMap<String,String> adminInfo = new HashMap<>();
-            adminInfo.put("name",name); adminInfo.put("residence","Pune");
+            HashMap<String, String> adminInfo = new HashMap<>();
+            adminInfo.put("name", name);
+            adminInfo.put("residence", "Pune");
             firebaseDatabase.child("Users").child(userID).child("info").setValue(adminInfo);
-            firebaseDatabase.child("Users").child(userID).child("token").setValue(instanceToken );
+            firebaseDatabase.child("Users").child(userID).child("token").setValue(instanceToken);
 
-            Intent intent = new Intent(MainActivity.this,AdminListOfRequestsActivity.class);
+            Intent intent = new Intent(MainActivity.this, AdminListOfRequestsActivity.class);
+            intent.putExtra("UserId", userID);
             startActivity(intent);
             MainActivity.this.finish();
-        }
-        else//user is not admin
+
+        } else//user is not admin
         {
             DatabaseReference firebaseDatabase;
             firebaseDatabase = FirebaseDatabase.getInstance().getReference();
 
-            Log.d("myTag" , "Writing FCM Token to Firebase");
+            Log.d("myTag", "Writing FCM Token to Firebase");
+            Log.d("UserId: ", userID + ", " + instanceToken);
 
-            firebaseDatabase.child("Users").child(userID).child("Token").setValue(instanceToken);
+            //firebaseDatabase.child("Users").child(userID).child("Token").setValue(instanceToken);
 
-            Intent intent = new Intent(MainActivity.this,ServicePickerActivity.class);
+            Intent intent = new Intent(MainActivity.this, ServicePickerActivity.class);
+            intent.putExtra("UserId", userID);
             startActivity(intent);
-            MainActivity.this.finish();
+        }
 
 
     }
@@ -149,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
-        buttonSignup =findViewById(R.id.buttonSignup);
+        buttonSignup = findViewById(R.id.buttonSignup);
 
     }
 
@@ -157,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        MainActivity.this.finish();
+        startActivity(new Intent(MainActivity.this, MainActivity.class));
     }
 
 

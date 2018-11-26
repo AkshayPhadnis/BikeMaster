@@ -1,10 +1,15 @@
 package bikeservicing.bikemaster;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,9 +38,9 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
     ListView listViewRequests;
     HashMap<String, String> s = new HashMap<>();
     ArrayList<HashMap<String, String>> customerRequestsList = new ArrayList<HashMap<String, String>>();
-    ArrayList<String> customerNames,customerPhones, customerAddress, customerDates, customerTimes;
+    ArrayList<String> customerNames, customerPhones, customerAddress, customerDates, customerTimes;
     FloatingActionButton buttonRefresh;
-    ArrayAdapter<String> displayRequests,req1;
+    ArrayAdapter<String> displayRequests, req1;
     TextView textViewName, textViewAddress, textViewPhone, textViewDate, textViewTime;
     Button buttonOkDialog;
 
@@ -47,17 +52,19 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
 
         initialize();
 
+
         getDataFromFirebase();
 
         buttonRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 customerRequestsList.clear();
+//                customerNames.clear();
                 //req1 = new ArrayAdapter<String>(AdminListOfRequestsActivity.this, android.R.layout.simple_list_item_2,customerNames);
-                displayRequests.notifyDataSetChanged();
-                listViewRequests.setAdapter(displayRequests);
+                // req1.notifyDataSetChanged();
+                listViewRequests.setAdapter(req1);
                 getDataFromFirebase();
-                Toast.makeText(getApplicationContext(),"Data refreshed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Data refreshed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -69,37 +76,74 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     private void initialize() {
 
         listViewRequests = findViewById(R.id.listViewRequests);
         buttonRefresh = findViewById(R.id.buttonRefresh);
+
     }
 
-    private void displayDialog(int position)
-    {
+    private void displayDialog(int position) {
 
         final Dialog dialog = new Dialog(AdminListOfRequestsActivity.this);
+        System.out.println("Dialog created");
         dialog.setContentView(R.layout.customdialog);
-
+        System.out.println("Content view set");
         dialog.setTitle("Details");
+        System.out.println("Title set");
 
-        textViewName = (TextView) findViewById(R.id.textViewrName);
-        textViewAddress = (TextView) findViewById(R.id.textViewAddress);
-        textViewPhone =(TextView) findViewById(R.id.textViewPhoneNumber);
-        textViewDate = (TextView) findViewById(R.id.textViewDate);
-        textViewTime = (TextView) findViewById(R.id.textViewTimeSlot);
+
+        textViewName = dialog.findViewById(R.id.textViewrName);
+        textViewAddress = dialog.findViewById(R.id.textViewAddress);
+        textViewPhone = dialog.findViewById(R.id.textViewPhoneNumber);
+        textViewDate = dialog.findViewById(R.id.textViewDate);
+        textViewTime = dialog.findViewById(R.id.textViewTimeSlot);
+
 
         textViewAddress.append(" " + customerAddress.get(position));
         textViewDate.append(" " + customerDates.get(position));
         textViewName.append(" " + customerNames.get(position));
-        textViewPhone.append(" " + customerPhones.get(position));
+        textViewPhone.setText(customerPhones.get(position));
         textViewTime.append(" " + customerTimes.get(position));
 
-        buttonOkDialog = findViewById(R.id.buttonOkDialog);
+
+        buttonOkDialog = dialog.findViewById(R.id.buttonOkDialog);
+
+        textViewPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (ActivityCompat.checkSelfPermission(AdminListOfRequestsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+
+                    Toast.makeText(AdminListOfRequestsActivity.this, "Please provide permissions for making a call",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else {
+                    String phone_no = String.format("tel: %s",textViewPhone.getText().toString());
+                    Intent callintent=new Intent(Intent.ACTION_CALL);
+                    callintent.setData(Uri.parse(phone_no));
+                    try
+                    {
+                        startActivity(callintent);
+                    }
+                    catch(android.content.ActivityNotFoundException e)
+                    {
+                        Toast.makeText(AdminListOfRequestsActivity.this, "Unable to make call", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         buttonOkDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,12 +152,8 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
             }
         });
 
-       Toast.makeText(getApplicationContext(),"Tapped at: " + position + " " +customerTimes.get(position) , Toast.LENGTH_SHORT).show();
-
-
-
-
-
+        dialog.show();
+        Toast.makeText(getApplicationContext(), "Tapped at: " + position + " " + customerTimes.get(position), Toast.LENGTH_SHORT).show();
 
 
     }
@@ -144,9 +184,6 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
                 initializeArraylists();
 
 
-
-
-
                 for (int i = 0; i < customerRequestsList.size(); i++) {
                     String name = customerRequestsList.get(i).get("Name");
                     String address = customerRequestsList.get(i).get("Address");
@@ -163,7 +200,9 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
 
                 displayRequests = new ArrayAdapter<String>(AdminListOfRequestsActivity.this, android.R.layout.simple_list_item_1, customerNames);
 
+
                 listViewRequests.setAdapter(displayRequests);
+                req1 = displayRequests;
             }
 
             @Override
@@ -184,4 +223,9 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
         customerTimes = new ArrayList<>();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AdminListOfRequestsActivity.this,AdminListOfRequestsActivity.class));
+    }
 }

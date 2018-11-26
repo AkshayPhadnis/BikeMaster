@@ -5,6 +5,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,12 +24,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class DateTimePickerActivity extends AppCompatActivity {
 
@@ -69,6 +76,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_time_picker);
 
+
         initialize();
         //disable button here
         //call function here
@@ -103,52 +111,51 @@ public class DateTimePickerActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"Select Date!!",Toast.LENGTH_LONG).show();
                 }
-                else
-                {
-                spinnerTimeSlot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    }
+                else {
+                    spinnerTimeSlot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-
-
-                //firebaseReference.child("Users").child(userID).child("Info").setValue();
-                //Toast.makeText(getApplicationContext(), "Added to firebase", Toast.LENGTH_LONG).show();
-
-                timeSlot = String.valueOf(spinnerTimeSlot.getSelectedItem());
-                status = "pending";
-
-                //Toast.makeText(getApplicationContext(),"Date:" + dateToSet+", Time slot: " + timeSlot + ", name:" + cusInfo.get(1) + ", phone: " + cusInfo.get(2) + ", address: " + cusInfo.get(3), Toast.LENGTH_LONG).show();
-                HashMap<String, String> serviceInfo = new HashMap<>();
-                serviceInfo.put("Date", dateToSet);
-                serviceInfo.put("Timeslot", timeSlot);
-                serviceInfo.put("Status", status);
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
 
-                firebaseReference.child("Users").child(userID).child("ServiceHistory").push().setValue(serviceInfo);
+                    //firebaseReference.child("Users").child(userID).child("Info").setValue();
+                    //Toast.makeText(getApplicationContext(), "Added to firebase", Toast.LENGTH_LONG).show();
 
-                Toast.makeText(getApplicationContext(), "Request submitted", Toast.LENGTH_SHORT).show();
-                cnt++;
+                    timeSlot = String.valueOf(spinnerTimeSlot.getSelectedItem());
+                    status = "pending";
+
+                    //Toast.makeText(getApplicationContext(),"Date:" + dateToSet+", Time slot: " + timeSlot + ", name:" + cusInfo.get(1) + ", phone: " + cusInfo.get(2) + ", address: " + cusInfo.get(3), Toast.LENGTH_LONG).show();
+                    HashMap<String, String> serviceInfo = new HashMap<>();
+                    serviceInfo.put("Date", dateToSet);
+                    serviceInfo.put("Timeslot", timeSlot);
+                    serviceInfo.put("Status", status);
+
+
+                    firebaseReference.child("Users").child(userID).child("ServiceHistory").push().setValue(serviceInfo);
+
+                    Toast.makeText(getApplicationContext(), "Request submitted", Toast.LENGTH_SHORT).show();
+                    cnt++;
 
 
                /* {
                     Toast.makeText(getApplicationContext(), "Request already submitted", Toast.LENGTH_SHORT).show();
                 }*/
 
-                String name = cusInfo.get(1);
-                String phoneNo = cusInfo.get(2);
-                String address = cusInfo.get(3);
+                    String name = cusInfo.get(1);
+                    String phoneNo = cusInfo.get(2);
+                    String address = cusInfo.get(3);
 
-                System.out.println("Name: " + name + ", Phone: " + phoneNo + ", Address: " + address);
+                    System.out.println("Name: " + name + ", Phone: " + phoneNo + ", Address: " + address);
 
-                sendToAdmin(dateToSet, timeSlot, name, phoneNo, address, status);
+                    sendToAdmin(dateToSet, timeSlot, name, phoneNo, address, status);
 
 
-
+                }
 
 
         });
@@ -216,4 +223,3 @@ public class DateTimePickerActivity extends AppCompatActivity {
 
 
 }
-

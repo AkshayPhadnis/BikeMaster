@@ -90,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    public void signUpUser(String email, String password, final HashMap<String, String> userInfo) {
+    public void signUpUser(String email, String password, final HashMap<String,String> userInfo) {
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -113,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    public void addUserToFirebasde(FirebaseUser user, HashMap<String, String> userInfo) {
+    public void addUserToFirebasde(FirebaseUser user, HashMap<String,String> userInfo) {
 
         String userID = user.getUid();
         DatabaseReference firebaseReference;

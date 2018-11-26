@@ -24,9 +24,9 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ServicePickerActivity" />
         <activity android:name=".AdminListOfRequestsActivity" />
-        <activity android:name=".DateTimePickerActivity" >
+        <activity android:name=".DateTimePickerActivity">
+
         </activity>
-        <activity android:name=".DateTimePickerActivity"></activity>
 
         <service
             android:name=".MyFirebaseMessagingService">
@@ -37,5 +37,7 @@
 
 
     </application>
+
+
 
 </manifest>
