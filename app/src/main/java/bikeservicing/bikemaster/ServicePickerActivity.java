@@ -40,10 +40,14 @@ public class ServicePickerActivity extends AppCompatActivity {
 
         buttonGenerateRequest = findViewById(R.id.buttonGenerateRequest);
 
+        Intent intent = getIntent();
+        final String userID = intent.getStringExtra("UserId");
+
         buttonGenerateRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ServicePickerActivity.this, DateTimePickerActivity.class);
+                intent.putExtra("UserId", userID);
                 startActivity(intent);
                 finish();
             }
@@ -109,36 +113,11 @@ public class ServicePickerActivity extends AppCompatActivity {
     }
 });
 
+
+*/
+
     }
 
-    private void callatruntimepermission() {
-
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CALL_PHONE)!=PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(new String[]{Manifest.permission.CALL_PHONE},pid);
-        }
-        else
-        {
-
-            Intent callIntent = new Intent(Intent.ACTION_CALL);
-            // Set the data for the intent as the phone number.
-            callIntent.setData(Uri.parse("tel:9561175543"));
-            startActivity(callIntent);
-        }
-    }
-
-    public void onRequestPermissionsResult(int RequestCode, @NonNull  String[] permission,@NonNull int[] grantResult)
-    {
-        super.onRequestPermissionsResult(RequestCode,permission,grantResult);
-
-        if(RequestCode==pid)
-        {
-            if(grantResult[0]==PackageManager.PERMISSION_GRANTED)
-            {
-                callatruntimepermission();
-            }
-        }*/
-    }
 
 
 }

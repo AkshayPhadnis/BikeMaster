@@ -1,16 +1,12 @@
 package bikeservicing.bikemaster;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.UserHandle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,12 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
- EditText editTextEmail, editTextPassword;
+    EditText editTextEmail, editTextPassword;
     Button buttonLogin, buttonSignup;
     FirebaseAuth mAuth;
     String instanceToken,email,password;
@@ -51,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"Authentication failed", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
     }
@@ -119,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
             firebaseDatabase.child("AdminToken").child(name).setValue(tokenDetails);
 
+
             //now for user
             HashMap<String,String> adminInfo = new HashMap<>();
             adminInfo.put("name",name); adminInfo.put("residence","Pune");
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             MainActivity.this.finish();
 
-        }
+
     }
 
     public void initialize() {
@@ -160,6 +159,6 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         MainActivity.this.finish();
     }
-    
+
 
 }
