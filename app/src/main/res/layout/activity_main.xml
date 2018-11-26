@@ -101,6 +101,12 @@
                         android:textColor="#ffffffff"
                         android:textStyle="bold" />
 
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Remember me" />
+
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

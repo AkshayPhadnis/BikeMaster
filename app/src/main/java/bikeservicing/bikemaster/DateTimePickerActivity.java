@@ -32,6 +32,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
             updateLabel();
 
         }
@@ -42,6 +43,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateToSet = sdf.format(myCalendar.getTime());
         editTextDate.setText(dateToSet);
+
     }
 
 
@@ -66,6 +68,12 @@ public class DateTimePickerActivity extends AppCompatActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(dateToSet==null)
+                {
+                    Toast.makeText(getApplicationContext(),"Select Date!!",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
                 spinnerTimeSlot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -77,7 +85,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
                 });
 
                 Toast.makeText(getApplicationContext(),"Date:" + dateToSet+", Time slot: " + String.valueOf(spinnerTimeSlot.getSelectedItem()), Toast.LENGTH_LONG).show();
-            }
+            }}
 
 
 

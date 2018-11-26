@@ -23,7 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     EditText editTextEmail, editTextPassword, editTextName, editTextPhone, editTextResidence;
     Button buttonRegister;
-    String email, password, name, phone, residence, age;
+    String email, password, name, phone, residence;
 
     private FirebaseAuth mAuth;
 
@@ -40,6 +40,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 email = editTextEmail.getText().toString();
+                password = editTextPassword.getText().toString();
+                name = editTextName.getText().toString();
+                phone = editTextPhone.getText().toString();
+                residence = editTextResidence.getText().toString();
                 if(!email.matches(emailPattern) || email.length()==0)
                 {
                     //editTextEmail.getText().clear();
@@ -47,39 +51,37 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                 }
-                password = editTextPassword.getText().toString();
-                if(password.length()<6)
+                else if(password.length()<6)
                 {
                     //editTextPassword.getText().clear();
                     editTextPassword.setError("Password too short!!!");
 
                 }
-                name = editTextName.getText().toString();
-                if(name.length()==0)
+                else if(name.length()==0)
                 {
                     editTextName.setError("Enter Name!!");
 
                 }
-                phone = editTextPhone.getText().toString();
-                if(phone.length()!=10)
+                else if(phone.length()!=10)
                 {
                    // editTextPhone.getText().clear();
                     editTextPhone.setError("Enter Valid PhoneNo ");
 
                 }
-                residence = editTextResidence.getText().toString();
-                if(residence.length()==0)
+                else if(residence.length()==0)
                 {
                     editTextResidence.setError("Enter Address!!");
 
                 }
-                HashMap<String,String> userInfo = new HashMap<>();
-                userInfo.put("name",name);
-                userInfo.put("email",email); userInfo.put("residence",residence); userInfo.put("age",age);
-                userInfo.put("phone",phone);
+                else {
+                    HashMap<String, String> userInfo = new HashMap<>();
+                    userInfo.put("name", name);
+                    userInfo.put("email", email);
+                    userInfo.put("residence", residence);
+                    userInfo.put("phone", phone);
 
-                signUpUser(email,password,userInfo);
-
+                    signUpUser(email, password, userInfo);
+                }
             }
         });
 
@@ -103,6 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
                     addUserToFirebasde(user,userInfo);
 
                     moveToLogin();
+                    finish();
 
 
                 }
@@ -139,4 +142,6 @@ public class SignUpActivity extends AppCompatActivity {
         editTextResidence = findViewById(R.id.editTextResidence);
         buttonRegister = findViewById(R.id.buttonRegister);
     }
+
+
 }
