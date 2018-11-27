@@ -22,7 +22,8 @@ public class ServicePickerActivity extends AppCompatActivity {
     Button buttonGenerateRequest;
     int totalPrize = 0;
     boolean isOpen = false;
-    int pid=1;
+    int pid = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,8 @@ public class ServicePickerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String userID = intent.getStringExtra("UserId");
 
+
+
         buttonGenerateRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +45,8 @@ public class ServicePickerActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
 
         fab_pluse = (FloatingActionButton) findViewById(R.id.fab_pluse);
         fab_call = (FloatingActionButton) findViewById(R.id.fab_call);
@@ -71,6 +76,8 @@ public class ServicePickerActivity extends AppCompatActivity {
                 }
             }
         });
+
+
         fab_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,28 +91,36 @@ public class ServicePickerActivity extends AppCompatActivity {
             }
         });
 
-        /*fab_call.setOnClickListener(new View.OnClickListener() {
+        fab_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 // Create the intent.
                 // Create the intent.
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                /*Intent callIntent = new Intent(Intent.ACTION_CALL);
                 // Set the data for the intent as the phone number.
                 callIntent.setData(Uri.parse("tel:9561175543"));
                 // If package resolves to an app, check for phone permission,
                 // and send intent.
 
-                callatruntimepermission();
+                callatruntimepermission();*/
 
+                Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_LONG).show();
+
+
+            }
+        });
 
 
 
 
     }
-});*/
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(ServicePickerActivity.this, ServicePickerActivity.class));
 
 
     }
-
-
 }
