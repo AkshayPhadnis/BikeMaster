@@ -4,8 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -17,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -107,11 +104,11 @@ public class DateTimePickerActivity extends AppCompatActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dateToSet==null)
-                {
-                    Toast.makeText(getApplicationContext(),"Select Date!!",Toast.LENGTH_LONG).show();
-                }
-                else {
+                if (dateToSet == null) {
+                    Toast.makeText(getApplicationContext(), "Select Date!!", Toast.LENGTH_LONG).show();
+                } else {
+
+
                     spinnerTimeSlot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -158,13 +155,33 @@ public class DateTimePickerActivity extends AppCompatActivity {
                 }
 
 
+            }
         });
+
+
 
 
     }
 
+    private void sendToAdmin(String dateToSet, String timeSlot, String name, String phoneNo, String address, String status) {
 
-    private void getDataFromFirebase(final String userID) {
+        firebaseRef2 = FirebaseDatabase.getInstance().getReference().child("AdminToken").child("CustomerRequests");
+
+        HashMap<String, String> serviceDetails = new HashMap<>();
+
+        serviceDetails.put("Name", name);
+        serviceDetails.put("Address", address);
+        serviceDetails.put("PhoneNo", phoneNo);
+        serviceDetails.put("Date", dateToSet);
+        serviceDetails.put("TimeSlot", timeSlot);
+        serviceDetails.put("Status", status);
+
+        firebaseRef2.push().setValue(serviceDetails);
+
+
+    }
+
+    private void getDataFromFirebase(String userID) {
 
         System.out.println("GetData Called by " + userID);
         firebaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Info");
@@ -194,6 +211,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
         });
 
 
+
     }
 
     private void initialize() {
@@ -203,23 +221,10 @@ public class DateTimePickerActivity extends AppCompatActivity {
         buttonOk = findViewById(R.id.buttonOk);
     }
 
-    private void sendToAdmin(String dateToSet, String timeSlot, String name, String phoneNo, String address, String status) {
-
-        firebaseRef2 = FirebaseDatabase.getInstance().getReference().child("AdminToken").child("CustomerRequests");
-
-        HashMap<String, String> serviceDetails = new HashMap<>();
-
-        serviceDetails.put("Name", name);
-        serviceDetails.put("Address", address);
-        serviceDetails.put("PhoneNo", phoneNo);
-        serviceDetails.put("Date", dateToSet);
-        serviceDetails.put("TimeSlot", timeSlot);
-        serviceDetails.put("Status",status);
-
-        firebaseRef2.push().setValue(serviceDetails);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
 
     }
-
-
 }

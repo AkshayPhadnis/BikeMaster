@@ -1,23 +1,13 @@
 package bikeservicing.bikemaster;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -93,7 +83,8 @@ public class ServicePickerActivity extends AppCompatActivity {
 
             }
         });
-      /*  fab_call.setOnClickListener(new View.OnClickListener() {
+
+        /*fab_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 // Create the intent.
@@ -111,7 +102,7 @@ public class ServicePickerActivity extends AppCompatActivity {
 
 
     }
-});
+});*/
 
 
     }
