@@ -224,7 +224,8 @@ public class DateTimePickerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
+        finish();
+        System.exit(0);
 
     }
 }

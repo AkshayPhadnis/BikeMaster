@@ -41,13 +41,18 @@ public class MainActivity extends AppCompatActivity {
         if (user != null) {
 
             System.out.println("Email: " + user.getEmail());
-            if(user.getEmail().compareTo("akshayphadnis1994@gmail.com") == 0)
+            if(user.getEmail().compareTo("akshayphadnis1994@gmail.com") == 0) {
                 startActivity(new Intent(MainActivity.this, AdminListOfRequestsActivity.class));
-            else
-                startActivity(new Intent(MainActivity.this,ServicePickerActivity.class));
+                finish();
 
-            this.finish();
 
+            }
+            else {
+                startActivity(new Intent(MainActivity.this, ServicePickerActivity.class));
+
+                finish();
+
+            }
         }
 
 
@@ -58,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,SignUpActivity.class);
                 startActivity(intent);
-                MainActivity.this.finish();
+                finish();
+
 
             }
         });
@@ -141,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AdminListOfRequestsActivity.class);
             intent.putExtra("UserId", userID);
             startActivity(intent);
-            MainActivity.this.finish();
+            finish();
+            System.exit(0);
 
         } else//user is not admin
         {
@@ -156,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ServicePickerActivity.class);
             intent.putExtra("UserId", userID);
             startActivity(intent);
+            finish();
+
         }
 
 
@@ -175,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(MainActivity.this, MainActivity.class));
+        finish();
+        System.exit(0);
     }
 
 

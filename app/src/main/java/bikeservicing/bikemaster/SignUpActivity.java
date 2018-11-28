@@ -105,7 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
                     addUserToFirebasde(user,userInfo);
 
                     moveToLogin();
-                    finish();
+
 
 
                 }
@@ -130,6 +130,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
         startActivity(intent);
+
     }
 
 

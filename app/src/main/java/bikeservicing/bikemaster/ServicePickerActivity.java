@@ -1,7 +1,11 @@
 package bikeservicing.bikemaster;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +22,9 @@ public class ServicePickerActivity extends AppCompatActivity {
 
     FloatingActionButton fab_pluse, fab_call, fab_logout;
     Animation fabopen, fabclose, fabanticlockwise, fabclockwise;
-    String PhnNumnber = "9561175543";
     Button buttonGenerateRequest;
-    int totalPrize = 0;
+
     boolean isOpen = false;
-    int pid = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,8 @@ public class ServicePickerActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "User Sign out!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ServicePickerActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
+                System.exit(0);
 
 
             }
@@ -94,18 +98,32 @@ public class ServicePickerActivity extends AppCompatActivity {
         fab_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-// Create the intent.
-                // Create the intent.
-                /*Intent callIntent = new Intent(Intent.ACTION_CALL);
-                // Set the data for the intent as the phone number.
-                callIntent.setData(Uri.parse("tel:9561175543"));
-                // If package resolves to an app, check for phone permission,
-                // and send intent.
+                if (ActivityCompat.checkSelfPermission(ServicePickerActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
 
-                callatruntimepermission();*/
-
-                Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(ServicePickerActivity.this, "Please provide permissions for making a call",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else {
+                    String phone_no = String.format("tel: %s","9561175543");
+                    Intent callintent=new Intent(Intent.ACTION_CALL);
+                    callintent.setData(Uri.parse(phone_no));
+                    try
+                    {
+                        startActivity(callintent);
+                    }
+                    catch(android.content.ActivityNotFoundException e)
+                    {
+                        Toast.makeText(ServicePickerActivity.this, "Unable to make call", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -119,7 +137,9 @@ public class ServicePickerActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(ServicePickerActivity.this, ServicePickerActivity.class));
+        startActivity(new Intent(ServicePickerActivity.this, MainActivity.class));
+        finish();
+        System.exit(0);
 
 
     }
