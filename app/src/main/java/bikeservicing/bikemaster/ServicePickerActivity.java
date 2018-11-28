@@ -1,6 +1,7 @@
 package bikeservicing.bikemaster;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class ServicePickerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String userID = intent.getStringExtra("UserId");
+        System.out.println("UID: " + userID);
 
 
 
@@ -96,13 +98,13 @@ public class ServicePickerActivity extends AppCompatActivity {
             public void onClick(View view) {
 // Create the intent.
                 // Create the intent.
-                /*Intent callIntent = new Intent(Intent.ACTION_CALL);
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
                 // Set the data for the intent as the phone number.
                 callIntent.setData(Uri.parse("tel:9561175543"));
                 // If package resolves to an app, check for phone permission,
                 // and send intent.
 
-                callatruntimepermission();*/
+
 
                 Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_LONG).show();
 

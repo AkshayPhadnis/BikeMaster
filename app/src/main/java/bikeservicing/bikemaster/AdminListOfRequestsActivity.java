@@ -39,7 +39,7 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
     FloatingActionButton buttonRefresh;
     ArrayAdapter<String> displayRequests, req1;
     TextView textViewName, textViewAddress, textViewPhone, textViewDate, textViewTime;
-    Button buttonOkDialog;
+    Button buttonAcceptDialog, buttonRejectDialog;
 
 
     @Override
@@ -106,7 +106,8 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
         textViewTime.append(" " + customerTimes.get(position));
 
 
-        buttonOkDialog = dialog.findViewById(R.id.buttonOkDialog);
+        buttonAcceptDialog = dialog.findViewById(R.id.buttonAcceptDialog);
+
 
         textViewPhone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +143,16 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
             }
         });
 
-        buttonOkDialog.setOnClickListener(new View.OnClickListener() {
+        buttonAcceptDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 dialog.dismiss();
             }
         });
+
 
         dialog.show();
         Toast.makeText(getApplicationContext(), "Tapped at: " + position + " " + customerTimes.get(position), Toast.LENGTH_SHORT).show();

@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonLogin, buttonSignup;
     FirebaseAuth mAuth;
     String instanceToken, email, password;
+    Intent intent1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (user != null) {
 
-            System.out.println("Email: " + user.getEmail());
-            if(user.getEmail().compareTo("akshayphadnis1994@gmail.com") == 0)
-                startActivity(new Intent(MainActivity.this, AdminListOfRequestsActivity.class));
-            else
-                startActivity(new Intent(MainActivity.this,ServicePickerActivity.class));
+            System.out.println("Email: " + user.getEmail() + ", UID: " + user.getUid());
+            if(user.getEmail().compareTo("akshayphadnis1994@gmail.com") == 0) {
+                intent1 = new Intent(MainActivity.this, AdminListOfRequestsActivity.class);
+                intent1.putExtra("UserId", user.getUid());
+                startActivity(intent1);
+            }
+            else {
+                intent1 = new Intent(MainActivity.this, ServicePickerActivity.class);
+                intent1.putExtra("UserId", user.getUid());
+                startActivity(intent1);
+            }
 
             this.finish();
 

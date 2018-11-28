@@ -82,6 +82,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                     signUpUser(email, password, userInfo);
                 }
+
+                Toast.makeText(getApplicationContext(),"Hi " + name + ", we directly logged you in!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -103,9 +105,10 @@ public class SignUpActivity extends AppCompatActivity {
                 {
                     FirebaseUser user = mAuth.getCurrentUser();
                     addUserToFirebasde(user,userInfo);
-
                     moveToLogin();
                     finish();
+
+
 
 
                 }

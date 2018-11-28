@@ -39,10 +39,12 @@ public class DateTimePickerActivity extends AppCompatActivity {
     EditText editTextDate;
     Calendar myCalendar = Calendar.getInstance();
     Spinner spinnerTimeSlot;
-    String dateToSet, timeSlot, status;
+    String dateToSet, timeSlot, status, selectedDate;
     Button buttonOk;
     int cnt = 1;
     DatabaseReference firebaseReference, firebaseRef2;
+    boolean alreadySubmitted=false;
+    DatePickerDialog datePickerDialog;
 
 
     ArrayList<String> cusInfo = new ArrayList<>();
@@ -95,65 +97,75 @@ public class DateTimePickerActivity extends AppCompatActivity {
         editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(DateTimePickerActivity.this, date, myCalendar
+               datePickerDialog  = new DatePickerDialog(DateTimePickerActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+
+               datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
+               datePickerDialog.show();
             }
         });
 
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dateToSet == null) {
-                    Toast.makeText(getApplicationContext(), "Select Date!!", Toast.LENGTH_LONG).show();
-                } else {
+
+                 {
+                    if (dateToSet == null) {
+                        Toast.makeText(getApplicationContext(), "Select Date!!", Toast.LENGTH_LONG).show();
+                    } else {
 
 
-                    spinnerTimeSlot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        }
+                        spinnerTimeSlot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                        }
-                    });
-
-
-                    //firebaseReference.child("Users").child(userID).child("Info").setValue();
-                    //Toast.makeText(getApplicationContext(), "Added to firebase", Toast.LENGTH_LONG).show();
-
-                    timeSlot = String.valueOf(spinnerTimeSlot.getSelectedItem());
-                    status = "pending";
-
-                    //Toast.makeText(getApplicationContext(),"Date:" + dateToSet+", Time slot: " + timeSlot + ", name:" + cusInfo.get(1) + ", phone: " + cusInfo.get(2) + ", address: " + cusInfo.get(3), Toast.LENGTH_LONG).show();
-                    HashMap<String, String> serviceInfo = new HashMap<>();
-                    serviceInfo.put("Date", dateToSet);
-                    serviceInfo.put("Timeslot", timeSlot);
-                    serviceInfo.put("Status", status);
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                            }
+                        });
 
 
-                    firebaseReference.child("Users").child(userID).child("ServiceHistory").push().setValue(serviceInfo);
+                        //firebaseReference.child("Users").child(userID).child("Info").setValue();
+                        //Toast.makeText(getApplicationContext(), "Added to firebase", Toast.LENGTH_LONG).show();
 
-                    Toast.makeText(getApplicationContext(), "Request submitted", Toast.LENGTH_SHORT).show();
-                    cnt++;
+                        timeSlot = String.valueOf(spinnerTimeSlot.getSelectedItem());
+                        status = "pending";
+
+                        //Toast.makeText(getApplicationContext(),"Date:" + dateToSet+", Time slot: " + timeSlot + ", name:" + cusInfo.get(1) + ", phone: " + cusInfo.get(2) + ", address: " + cusInfo.get(3), Toast.LENGTH_LONG).show();
+                        HashMap<String, String> serviceInfo = new HashMap<>();
+                        serviceInfo.put("Date", dateToSet);
+                        serviceInfo.put("Timeslot", timeSlot);
+                        serviceInfo.put("Status", status);
+
+
+                        firebaseReference.child("Users").child(userID).child("ServiceHistory").push().setValue(serviceInfo);
+
+                        Toast.makeText(getApplicationContext(), "Request submitted", Toast.LENGTH_SHORT).show();
+                        cnt++;
 
 
                /* {
                     Toast.makeText(getApplicationContext(), "Request already submitted", Toast.LENGTH_SHORT).show();
                 }*/
 
-                    String name = cusInfo.get(1);
-                    String phoneNo = cusInfo.get(2);
-                    String address = cusInfo.get(3);
+                        String name = cusInfo.get(1);
+                        String phoneNo = cusInfo.get(2);
+                        String address = cusInfo.get(3);
 
-                    System.out.println("Name: " + name + ", Phone: " + phoneNo + ", Address: " + address);
+                        System.out.println("Name: " + name + ", Phone: " + phoneNo + ", Address: " + address);
 
-                    sendToAdmin(dateToSet, timeSlot, name, phoneNo, address, status);
+                        sendToAdmin(dateToSet, timeSlot, name, phoneNo, address, status);
+
+
+                    }
+
+
 
 
                 }
-
 
             }
         });
@@ -225,6 +237,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
+        startActivity(new Intent(DateTimePickerActivity.this, ServicePickerActivity.class));
 
     }
 }
