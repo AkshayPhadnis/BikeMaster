@@ -1,6 +1,8 @@
 package bikeservicing.bikemaster;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText editTextEmail, editTextPassword;
@@ -30,70 +34,60 @@ public class MainActivity extends AppCompatActivity {
     String instanceToken, email, password;
     Intent intent1;
 
+    private ProgressDialog progressBar;
+    SweetAlertDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initialize();
+
+        pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#000000"));
+        pDialog.setTitleText("Logging in");
+        pDialog.setCancelable(false);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
-
+            pDialog.show();
             System.out.println("Email: " + user.getEmail() + ", UID: " + user.getUid());
-            if(user.getEmail().compareTo("akshayphadnis1994@gmail.com") == 0) {
+            if (user.getEmail().compareTo("akshayphadnis1994@gmail.com") == 0) {
                 intent1 = new Intent(MainActivity.this, AdminListOfRequestsActivity.class);
                 intent1.putExtra("UserId", user.getUid());
                 startActivity(intent1);
-            }
-            else {
+            } else {
+                //getLoginScreen();
                 intent1 = new Intent(MainActivity.this, ServicePickerActivity.class);
                 intent1.putExtra("UserId", user.getUid());
                 startActivity(intent1);
+
+
             }
+            Toast.makeText(getApplicationContext(), "Hi " + user.getEmail() + ", we directly logged you in.", Toast.LENGTH_LONG).show();
 
             this.finish();
 
+        } else {
+            //Toast.makeText(getApplicationContext(), "User null", Toast.LENGTH_LONG).show();
+            getLoginScreen();
         }
 
 
-        initialize();
 
-        buttonSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SignUpActivity.class);
-                startActivity(intent);
-                MainActivity.this.finish();
-
-            }
-        });
-
-
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                email = editTextEmail.getText().toString();
-                password = editTextPassword.getText().toString();
-                if (email.length() == 0) {//editTextEmail.getText().clear();
-                    editTextEmail.setError("Invalid Email Address");
-                } else if (password.length() < 6) {//editTextPassword.getText().clear();
-                    editTextPassword.setError("Password too short!!!");
-                } else
-                    signIn();
-            }
-        });
     }
+
 
     public void signIn() {
 
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     instanceToken = FirebaseInstanceId.getInstance().getToken();
                     Log.println(Log.INFO, "mytag", "Token obtained:" + instanceToken);
 
@@ -103,10 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Sign in successfull", Toast.LENGTH_LONG).show();
 
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"Authentication failed", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -177,11 +169,46 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void getLoginScreen() {
+
+
+        buttonSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                startActivity(intent);
+                MainActivity.this.finish();
+
+            }
+        });
+
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                email = editTextEmail.getText().toString();
+                password = editTextPassword.getText().toString();
+                if (email.length() == 0) {//editTextEmail.getText().clear();
+                    editTextEmail.setError("Invalid Email Address");
+                } else if (password.length() < 6) {//editTextPassword.getText().clear();
+                    editTextPassword.setError("Password too short!!!");
+                } else
+                    signIn();
+
+                pDialog.show();
+            }
+        });
+
+    }
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(MainActivity.this, MainActivity.class));
+        finish();
+        System.exit(0);
     }
 
 

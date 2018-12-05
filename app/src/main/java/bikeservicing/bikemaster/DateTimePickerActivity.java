@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -34,17 +35,21 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class DateTimePickerActivity extends AppCompatActivity {
 
-    EditText editTextDate;
+    TextView textViewDate;
     Calendar myCalendar = Calendar.getInstance();
     Spinner spinnerTimeSlot;
-    String dateToSet, timeSlot, status, selectedDate;
+    String dateToSet, timeSlot, status;
     Button buttonOk;
     int cnt = 1;
     DatabaseReference firebaseReference, firebaseRef2;
     boolean alreadySubmitted=false;
     DatePickerDialog datePickerDialog;
+    String userID;
+    SweetAlertDialog pDialog;
 
 
     ArrayList<String> cusInfo = new ArrayList<>();
@@ -66,7 +71,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
         String myFormat = "dd MMM yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateToSet = sdf.format(myCalendar.getTime());
-        editTextDate.setText(dateToSet);
+        textViewDate.setText(dateToSet);
     }
 
 
@@ -77,13 +82,15 @@ public class DateTimePickerActivity extends AppCompatActivity {
 
 
         initialize();
+
+        pDialog = new SweetAlertDialog(DateTimePickerActivity.this, SweetAlertDialog.SUCCESS_TYPE).setTitleText("Done!").setContentText("Request has been submitted.");
         //disable button here
         //call function here
         //Load into arraylist
         //And enable button
 
         Intent intent = getIntent();
-        final String userID = intent.getStringExtra("UserId");
+        userID = intent.getStringExtra("UserId");
 
         buttonOk.setEnabled(false);
 
@@ -92,9 +99,9 @@ public class DateTimePickerActivity extends AppCompatActivity {
 
         buttonOk.setEnabled(true);
 
-        editTextDate.setInputType(InputType.TYPE_NULL);
 
-        editTextDate.setOnClickListener(new View.OnClickListener() {
+
+        textViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                datePickerDialog  = new DatePickerDialog(DateTimePickerActivity.this, date, myCalendar
@@ -102,7 +109,12 @@ public class DateTimePickerActivity extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH));
 
                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
+
+                Calendar c = Calendar.getInstance();
+                c.getTime();
+                System.out.println("Date: " + c.getTime().getDate());
+
+
                datePickerDialog.show();
             }
         });
@@ -128,8 +140,8 @@ public class DateTimePickerActivity extends AppCompatActivity {
                         });
 
 
-                        //firebaseReference.child("Users").child(userID).child("Info").setValue();
-                        //Toast.makeText(getApplicationContext(), "Added to firebase", Toast.LENGTH_LONG).show();
+                    //firebaseReference.child("Users").child(userID).child("Info").setValue();
+                    //Toast.makeText(getApplicationContext(), "Added to firebase", Toast.LENGTH_LONG).show();
 
                         timeSlot = String.valueOf(spinnerTimeSlot.getSelectedItem());
                         status = "pending";
@@ -155,17 +167,21 @@ public class DateTimePickerActivity extends AppCompatActivity {
                         String phoneNo = cusInfo.get(2);
                         String address = cusInfo.get(3);
 
-                        System.out.println("Name: " + name + ", Phone: " + phoneNo + ", Address: " + address);
+                    System.out.println("Name: " + name + ", Phone: " + phoneNo + ", Address: " + address);
 
-                        sendToAdmin(dateToSet, timeSlot, name, phoneNo, address, status);
+                    sendToAdmin(dateToSet, timeSlot, name, phoneNo, address, status);
 
 
-                    }
+                }
+
+                pDialog.show();
 
 
 
 
                 }
+
+                /**/
 
             }
         });
@@ -228,7 +244,7 @@ public class DateTimePickerActivity extends AppCompatActivity {
 
     private void initialize() {
 
-        editTextDate = findViewById(R.id.editTextDate);
+        textViewDate = findViewById(R.id.textViewDate);
         spinnerTimeSlot = findViewById(R.id.spinnerTimeSlot);
         buttonOk = findViewById(R.id.buttonOk);
     }
@@ -237,7 +253,10 @@ public class DateTimePickerActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(DateTimePickerActivity.this, ServicePickerActivity.class));
+        Intent intent = new Intent(DateTimePickerActivity.this, ServicePickerActivity.class);
+        intent.putExtra("UserId",userID);
+        startActivity(intent);
+        buttonOk.setEnabled(false);
 
     }
 }

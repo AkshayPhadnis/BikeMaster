@@ -1,6 +1,7 @@
 package bikeservicing.bikemaster;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,11 +20,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class SignUpActivity extends AppCompatActivity {
 
     EditText editTextEmail, editTextPassword, editTextName, editTextPhone, editTextResidence;
     Button buttonRegister;
     String email, password, name, phone, residence;
+
 
     private FirebaseAuth mAuth;
 
@@ -34,9 +38,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         initialize();
 
+
+
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                pDialog.show();
 
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 email = editTextEmail.getText().toString();
@@ -83,7 +91,13 @@ public class SignUpActivity extends AppCompatActivity {
                     signUpUser(email, password, userInfo);
                 }
 
-                Toast.makeText(getApplicationContext(),"Hi " + name + ", we directly logged you in!", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(),"Hi " + name + ", we directly logged you in!", Toast.LENGTH_LONG).show();
+
+
+
+
+
+
             }
         });
 
@@ -106,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     addUserToFirebasde(user,userInfo);
                     moveToLogin();
-                    finish();
+
 
 
 
@@ -133,6 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
         startActivity(intent);
+
     }
 
 

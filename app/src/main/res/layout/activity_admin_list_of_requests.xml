@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ListView
+        android:id="@+id/listViewRequests"
+        android:layout_width="318dp"
+        android:layout_height="437dp">
+
+
+
+ <!--   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,32 +30,59 @@
 
 
 
-    <ListView
-        android:id="@+id/listViewRequests"
-        android:layout_width="match_parent"
-        android:layout_height="305dp" />
+
+
+
+    </LinearLayout>-->
+    </ListView>
+
 
 
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="180dp"
+        android:src="@drawable/logout"
+        android:elevation="6dp"
+
+        app:pressedTranslationZ="12dp"
+        app:backgroundTint="@color/fab_1"
+        android:visibility="invisible"
+        />
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/buttonRefresh"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="100dp"
         android:clickable="true"
         android:focusable="true"
-        app:srcCompat="@drawable/refresh" />
-
-    <!--<TextView
-        android:id="@android:id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:visibility="invisible"
+        app:pressedTranslationZ="32dp"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/refresh"
         />
 
-    <TextView
-        android:id="@android:id/text2"
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_pluse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />-->
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="6dp"
+        android:src="@drawable/pluse"
+        app:pressedTranslationZ="12dp" />
 
 
-</LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+

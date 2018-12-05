@@ -24,8 +24,8 @@ public class StartActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(i);
 
-                // close this activity
-                finish();
+               /* finish();
+                System.exit(0);*/
 
             }
         }, SPLASH_TIME_OUT );

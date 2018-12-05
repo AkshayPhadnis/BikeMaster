@@ -1,14 +1,19 @@
 package bikeservicing.bikemaster;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +29,7 @@ public class ServicePickerActivity extends AppCompatActivity {
     int totalPrize = 0;
     boolean isOpen = false;
     int pid = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,7 @@ public class ServicePickerActivity extends AppCompatActivity {
                 firebaseAuth.signOut();
                 Toast.makeText(getApplicationContext(), "User Sign out!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ServicePickerActivity.this, MainActivity.class);
+                intent.putExtra("Forced",true);
                 startActivity(intent);
 
 
@@ -98,19 +105,63 @@ public class ServicePickerActivity extends AppCompatActivity {
             public void onClick(View view) {
 // Create the intent.
                 // Create the intent.
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                //Intent callIntent = new Intent(Intent.ACTION_CALL);
                 // Set the data for the intent as the phone number.
-                callIntent.setData(Uri.parse("tel:9561175543"));
+                //callIntent.setData(Uri.parse("tel:9561175543"));
                 // If package resolves to an app, check for phone permission,
                 // and send intent.
 
 
+                if (ActivityCompat.checkSelfPermission(ServicePickerActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
 
-                Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ServicePickerActivity.this, "Please provide permissions for making a call",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else {
+                    String phone_no = "tel:9561175543";
+                    Intent callintent=new Intent(Intent.ACTION_CALL);
+                    callintent.setData(Uri.parse(phone_no));
+                    try
+                    {
+                        startActivity(callintent);
+                        Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_LONG).show();
+                    }
+                    catch(android.content.ActivityNotFoundException e)
+                    {
+                        Toast.makeText(ServicePickerActivity.this, "Unable to make call", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+
+
+
 
 
             }
         });
+
+       /* fab_call.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+
+
+
+
+
+                return true;
+            }
+        });*/
 
 
 

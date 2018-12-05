@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import android.view.animation.AnimationUtils;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +34,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class AdminListOfRequestsActivity extends AppCompatActivity {
+
+    FloatingActionButton fab_pluse, fab_call, fab_logout;
+    Animation fabopen, fabclose, fabanticlockwise, fabclockwise;
+    Button buttonGenerateRequest;
+
+    boolean isOpen = false;
 
     CusInfo c = new CusInfo();
     DatabaseReference firebaseReference;
@@ -52,6 +63,15 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
 
         getDataFromFirebase();
 
+        fab_pluse = (FloatingActionButton) findViewById(R.id.fab_pluse);
+        //fab_call = (FloatingActionButton) findViewById(R.id.fab_call);
+        fab_logout = (FloatingActionButton) findViewById(R.id.fab_logout);
+        fabopen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fabclose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        fabclockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
+        fabanticlockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anticlockwise);
+
+
         buttonRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +84,43 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Data refreshed", Toast.LENGTH_SHORT).show();
             }
         });
+        fab_pluse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isOpen) {
+                    buttonRefresh.startAnimation(fabclose);
+                    fab_logout.startAnimation(fabclose);
+                    fab_pluse.startAnimation(fabanticlockwise);
+                    fab_logout.setClickable(false);
+                    buttonRefresh.setClickable(false);
+                    isOpen = false;
+                } else {
+                    buttonRefresh.startAnimation(fabopen);
+                    fab_logout.startAnimation(fabopen);
+                    fab_pluse.startAnimation(fabclockwise);
+                    fab_logout.setClickable(true);
+                    buttonRefresh.setClickable(true);
+                    isOpen = true;
+                }
+            }
+        });
+
+
+        fab_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.signOut();
+                Toast.makeText(getApplicationContext(), "User Sign out!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminListOfRequestsActivity.this, MainActivity.class);
+               // intent.putExtra("Forced",true);
+                startActivity(intent);
+                /*finish();
+                System.exit(0);*/
+            }
+        });
+
+
 
         listViewRequests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -217,6 +274,7 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
 
     }
 
+
     private void initializeArraylists() {
         customerNames = new ArrayList<>();
         customerAddress = new ArrayList<>();
@@ -225,9 +283,18 @@ public class AdminListOfRequestsActivity extends AppCompatActivity {
         customerTimes = new ArrayList<>();
     }
 
+
+
+
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(AdminListOfRequestsActivity.this,AdminListOfRequestsActivity.class));
+        startActivity(new Intent(AdminListOfRequestsActivity.this, MainActivity.class));
+        finish();
+        System.exit(0);
+
+
     }
 }

@@ -18,18 +18,22 @@
     tools:context=".DateTimePickerActivity">
 
 
-    <EditText
-        android:id="@+id/editTextDate"
+    <TextView
+        android:id="@+id/textViewDate"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:hint="Select Date"
-        android:inputType="none" />
+        android:gravity="center"
+        android:inputType="none"
+        android:text="Select date"
+        android:textColor="@color/main_blue_stroke_color"
+        android:textSize="25dp" />
 
     <Spinner
         android:id="@+id/spinnerTimeSlot"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:entries="@array/timeSlots"
+        android:gravity="center"
         android:prompt="@string/time_prompt" />
 
     <Button
